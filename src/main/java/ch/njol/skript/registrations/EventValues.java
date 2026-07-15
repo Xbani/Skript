@@ -2,6 +2,7 @@ package ch.njol.skript.registrations;
 
 import ch.njol.skript.classes.Changer.ChangeMode;
 import ch.njol.skript.expressions.base.EventValueExpression;
+import ch.njol.skript.util.Getter;
 import ch.njol.util.Kleenean;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
@@ -85,6 +86,19 @@ public class EventValues {
 	}
 
 	/**
+	 * Binary compatibility bridge for addons compiled against Skript's legacy Getter API.
+	 *
+	 * @deprecated use the {@link Converter} overload.
+	 */
+	@Deprecated(since = "2.15", forRemoval = true)
+	public static <T, E extends Event> void registerEventValue(
+		Class<E> eventClass, Class<T> valueClass,
+		Getter<T, E> getter
+	) {
+		registerEventValue(eventClass, valueClass, (Converter<E, T>) getter, TIME_NOW);
+	}
+
+	/**
 	 * Registers an event value.
 	 *
 	 * @param eventClass the event class.
@@ -101,6 +115,19 @@ public class EventValues {
 		Converter<E, T> converter, int time
 	) {
 		registerEventValue(eventClass, valueClass, converter, time, null, (Class<? extends E>[]) null);
+	}
+
+	/**
+	 * Binary compatibility bridge for addons compiled against Skript's legacy Getter API.
+	 *
+	 * @deprecated use the {@link Converter} overload.
+	 */
+	@Deprecated(since = "2.15", forRemoval = true)
+	public static <T, E extends Event> void registerEventValue(
+		Class<E> eventClass, Class<T> valueClass,
+		Getter<T, E> getter, int time
+	) {
+		registerEventValue(eventClass, valueClass, (Converter<E, T>) getter, time);
 	}
 
 	/**
